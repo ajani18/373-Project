@@ -4,13 +4,43 @@ import sklearn
 from sklearn.neighbors import KNeighborsClassifier as KNN
 from sklearn.model_selection import train_test_split
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn import metrics
+import matplotlib.pyplot as plt
 
 #takes predictions and y_test
 #returns accuracy of predictions (kNN, SVM, Cross Val, Boostrapping)
 def accuracy(predictions, y_test):
     return np.mean(predictions == y_test.to_numpy())
+
+def cross_valKnn(k_folds, data, n_neighbhors):
+    accuracies = []
+    n, d = data.shape
+
+    for i in range(k_folds):
+        X = data.loc[:, data.columns != 'diagnosis']  # get all columns except for diagnosis
+        y = data["diagnosis"]  # diagnosisis only y
+
+        T = range(int(math.floor(n * i / k_folds)), int((math.floor(n * (i + 1) / k_folds)) - 1) + 1)
+
+        S = np.arange(n)
+        S = np.in1d(S, T)
+        S = np.where(~S)[0]  # n array - T
+
+        X_train = X.iloc[S]
+        X_test = X.iloc[~S]
+
+        y_train = y.iloc[S]
+        y_test = y.iloc[~S]
+
+        knn = KNN(n_neighbors=n_neighbhors)
+        knn.fit(X_train, y_train)
+
+        pred = knn.predict(X_test)
+        accu = accuracy(pred, y_test)
+
+        accuracies.append(accu)
+
+    return np.array(accuracies).mean()
 
 #Converting diagnosis column
 #to numerical values
@@ -25,7 +55,7 @@ cancer_df = pd.read_csv("breast_cancer.csv")
 cancer_df = cancer_df.drop(columns=["id", "Unnamed: 32"]) #drop id and Unnamed: 32 columns
 cancer_df["diagnosis"] = cancer_df["diagnosis"].apply(reclassify) #reclassify B and M in diagnosis column
 
-#print("Shape for cancer_df", cancer_df.shape) #(569, 31)
+# print("Shape for cancer_df", cancer_df.shape) #(569, 31)
 
 X = cancer_df.loc[:, cancer_df.columns != 'diagnosis'] #get all columns except for diagnosis
 y = cancer_df["diagnosis"] #diagnosisis only y
@@ -40,10 +70,6 @@ y_train = y[:train_proportion]
 
 X_test = X[train_proportion:]
 y_test = y[train_proportion:]
-
-#print(cancer_df.describe()) # to describe all the data
-#print(X)
-#print(y)
 
 #K-nearest Neighbours
 
@@ -60,4 +86,4 @@ for i in range(1, 15):
      model.fit(X_train, y_train)
      score = knn.score(X_test, y_test)
      y_pred = model.predict(X_test)
-     print("Accuracy for k = " + str(i) + ": " , metrics.accuracy_score(y_test, y_pred))
+     print("Accuracy for k = " + str(i) + ": " , accuracy(y_pred, y_test))
