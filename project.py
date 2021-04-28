@@ -7,6 +7,36 @@ import numpy as np
 from sklearn import metrics
 import matplotlib.pyplot as plt
 
+
+def boostrap(B, data, n_neighbhors):
+    accuracies = []
+
+    indices = np.random.randint(0, len(data), (B, len(data)))
+
+    for i in indices:
+        cancer_df = data.iloc[i] #entire random sample
+
+        X = cancer_df.loc[:, cancer_df.columns != 'diagnosis']  # get all columns except for diagnosis
+        y = cancer_df["diagnosis"]  # diagnosisis only y
+
+        train_proportion = math.floor(cancer_df.shape[0] * 0.75)
+
+        X_train = X[:train_proportion]
+        y_train = y[:train_proportion]
+        #
+        X_test = X[train_proportion:]
+        y_test = y[train_proportion:]
+
+        knn = KNN(n_neighbors=n_neighbhors)
+        knn.fit(X_train, y_train)
+
+        pred = knn.predict(X_test)
+        accu = accuracy(pred, y_test)
+
+        accuracies.append(accu)
+
+    return np.array(accuracies).mean()
+
 #takes predictions and y_test
 #returns accuracy of predictions (kNN, SVM, Cross Val, Boostrapping)
 def accuracy(predictions, y_test):
