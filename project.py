@@ -3,6 +3,8 @@ import math
 import sklearn
 from sklearn.neighbors import KNeighborsClassifier as KNN
 from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score
 import numpy as np
 from sklearn import metrics
 import matplotlib.pyplot as plt
@@ -117,3 +119,19 @@ for i in range(1, 15):
      score = knn.score(X_test, y_test)
      y_pred = model.predict(X_test)
      print("Accuracy for k = " + str(i) + ": " , accuracy(y_pred, y_test))
+
+
+def svm(data):
+    C_parameter = [1, 5, 10]
+    predictions = []
+    accurate = [0, 0, 0]
+    X_train, X_test, y_train, y_test = train_test_split(data, test_size=0.1, random_state=1)
+    for i in range (0, 3):
+        model = SVC(C=C_parameter[i])
+        model.fit(X_train, y_train)  # hyperplane
+        decisions = model.decision_function(X_test)
+        predictions[i] = model.predict(X_test)
+        accurate[i] = accuracy_score(y_test, predictions)
+
+    most_accurate = accurate.index(max(accurate))
+    return predictions[most_accurate]
