@@ -131,7 +131,7 @@ def svm(data):
         model.fit(X_train, y_train)  # hyperplane
         decisions = model.decision_function(X_test)
         predictions[i] = model.predict(X_test)
-        accurate[i] = accuracy_score(y_test, predictions)
+        accurate[i] = accuracy_score(y_test, predictions[i])
 
     most_accurate = accurate.index(max(accurate))
     return predictions[most_accurate]
