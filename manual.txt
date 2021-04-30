@@ -1,0 +1,39 @@
+Manual
+
+External libraries and tools used - 
+1.) math
+2.) pandas
+3.) numpy
+4.) sklearn.neighbors import KNeighborsClassifier
+5.) from sklearn.svm import SVC
+6.) matplotlib.pyplot
+7.) PyCharm
+
+After the import statements, line 8 through line 103 contains the code for the different functions used throughout the project.
+Line 102 through line 118 is the part in which we preprocess the data.
+
+Hyperparameter tuning for kNN - 
+Uncomment lines 122 to 127
+
+Bootstrapping for kNN - 
+Uncomment lines 132 to 135
+
+To get plot for hyperparameter accuracy - 
+Uncomment lines 122 to 127 and 138 to 143
+
+Hyperparameter tuning for SVM using cross-validation - 
+Uncomment lines 146 to 151
+
+Bootstrapping for SVM - 
+Uncomment lines 156 to 159
+
+To get plot for hyperparameter accuracy - 
+Uncomment lines 146 to 151 and 163 to 168
+
+For plotting subset accuracy graphs for kNN -
+Uncomment lines 176 to 198
+
+For plotting subset accuracy graphs for SVM  -
+Uncomment lines 200 to 223
+
+
