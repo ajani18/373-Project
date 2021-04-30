@@ -1,12 +1,9 @@
 import pandas as pd
 import math
 from sklearn.neighbors import KNeighborsClassifier as KNN
-from sklearn.model_selection import train_test_split
 import numpy as np
 from sklearn.svm import SVC
-from sklearn import svm
 import matplotlib.pyplot as plt
-
 
 def boostrap(B, data, n_neighbhor, c_vals, alg):
     accuracies = []
@@ -130,7 +127,7 @@ np.random.seed(0)
 #     knn_cv.append(accu)
 #
 # print("Accruacy from bootstrapping for kNN is", boostrap(30, cancer_df, 14, 0, "kNN"))
-# print("The best hyperparameter for SVM by bootstrapping is", max(knn_cv))
+# print("The best hyperparameter for kNN by bootstrapping is", max(knn_cv))
 
 # boostrap_knn = []
 # for neigh in k_values:
